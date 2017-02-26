@@ -1,5 +1,8 @@
 import telebot
 from subprocess import call
+import os.path as path
+import json
+import sys
 
 with open("./bot.token", "r") as TOKEN:
     bot = telebot.TeleBot(TOKEN.readline().strip())
