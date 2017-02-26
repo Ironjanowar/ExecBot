@@ -15,7 +15,7 @@ def exec(m):
 
 @bot.message_handler(commands=["yt"])
 def youtube(m):
-    link = m.split(" ", 1)[1]
+    link = m.text.split(" ", 1)[1]
     # exec
     call(["ytcli", link])
     bot.send_message(m.chat.id, "Reproducing video!")
