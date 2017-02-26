@@ -4,8 +4,23 @@ from subprocess import call
 with open("./bot.token", "r") as TOKEN:
     bot = telebot.TeleBot(TOKEN.readline().strip())
 
+if not path.isfile("./data/admins.json"):
+    with open('./data/admins.json', 'w') as adminData:
+        adminData.write('[]')
+        adminData.close
+
+with open('./data/admins.json', 'r') as adminData:
+    admins = json.load(adminData)
+    
 # Ignorar mensajes antiguos
 bot.skip_pending = True
+
+def isAdmin_fromPrivate(message):
+    if message.chat.type == 'private':
+        userID = message.from_user.id
+        if str(userID) in admins:
+            return True
+    return False
 
 @bot.message_handler(commands=["exec"])
 def exec(m):
@@ -19,6 +34,15 @@ def youtube(m):
     # exec
     call(["ytcli", link])
     bot.send_message(m.chat.id, "Reproducing video!")
+
+@bot.message_handler(commands=['update'])
+def auto_update(message):
+    if isAdmin_fromPrivate(message):
+        bot.reply_to(message, "Reiniciando..\n\nPrueba algun comando en 10 segundos")
+        print("Updating..")
+        sys.exit()
+    else:
+        bot.reply_to(message, "Este comando es solo para admins y debe ser enviado por privado")
 
 print("Running...")
 bot.polling()
