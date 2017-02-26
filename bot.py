@@ -17,7 +17,7 @@ def exec(m):
 def youtube(m):
     link = m.split(" ", 1)[1]
     # exec
-    call(["ytcli", "-o", "hdmi", link])
+    call(["ytcli", link])
     bot.send_message(m.chat.id, "Reproducing video!")
 
 print("Running...")
