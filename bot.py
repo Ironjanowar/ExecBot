@@ -18,6 +18,24 @@ with open('./data/admins.json', 'r') as adminData:
 # Ignorar mensajes antiguos
 bot.skip_pending = True
 
+# Functions
+def listener(messages):
+    # When new messages arrive TeleBot will call this function.
+    for m in messages:
+        if m.content_type == 'text':
+            # Prints the sent message to the console
+            if m.chat.type == 'private':
+                print("Chat -> " + str(m.chat.first_name) +
+                      " [" + str(m.chat.id) + "]: " + m.text)
+            else:
+                print("Group -> " + str(m.chat.title) +
+                      " [" + str(m.chat.id) + "]: " + m.text)
+
+# Initializing listener
+bot.set_update_listener(listener)
+
+# Handlers
+
 def isAdmin_fromPrivate(message):
     if message.chat.type == 'private':
         userID = message.from_user.id
