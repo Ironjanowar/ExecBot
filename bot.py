@@ -58,7 +58,7 @@ def youtube(m):
     call(["ytcli", link])
     bot.reply_to(m, "Video terminado")
 
-@bot.message_handler(command=['ping'])
+@bot.message_handler(commands=['ping'])
 def send_ping(m):
     bot.reply_to(m, "PONG!")
 
