@@ -51,12 +51,16 @@ def exec(m):
 
 @bot.message_handler(commands=["yt"])
 def youtube(m):
+    call(["pkill", "omxplayer"])
     link = m.text.split(" ", 1)[1]
-    # exec
     bot.send_message(m.chat.id, "Reproducing video!")
-    # kill bot
     call(["ytcli", link])
     bot.reply_to(m, "Video terminado")
+
+@bot.message_handler(commands=["stop"])
+def stop(m):
+    call(["pkill", "omxplayer"])
+    bot.send_message(m.chat.id, "Player stopped")
 
 @bot.message_handler(commands=['ping'])
 def send_ping(m):
