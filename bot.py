@@ -59,7 +59,7 @@ def youtube(m):
     bot.reply_to(m, "Video terminado")
 
 @bot.message_handler(command=['ping'])
-def ping(m):
+def send_ping(m):
     bot.reply_to(m, "PONG!")
 
 @bot.message_handler(commands=['update'])
