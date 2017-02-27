@@ -36,8 +36,13 @@ def youtube(m):
     link = m.text.split(" ", 1)[1]
     # exec
     bot.send_message(m.chat.id, "Reproducing video!")
+    # kill bot
     call(["ytcli", link])
     bot.reply_to(m, "Video terminado")
+
+@bot.message_handler(command=['ping'])
+def ping(m):
+    bot.reply_to(m, "PONG!")
 
 @bot.message_handler(commands=['update'])
 def auto_update(message):
