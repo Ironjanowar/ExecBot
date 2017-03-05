@@ -1,5 +1,6 @@
 import telebot
 from subprocess import call
+from subprocess import check_output
 import os.path as path
 import json
 import sys
@@ -37,8 +38,24 @@ def reproduceYoutube(link, m):
     call(["ytcli", link])
     bot.reply_to(m, "Video terminado")
 
+def reproduceYoutubeInQueue(m):
+    call(["pkill", "omxplayer"])
+    bot.send_message(m.chat.id, "Reproducing video!")
+    call(["ytcli", queue[0]])
+    queue.pop(0)
+    bot.reply_to(m.chat.id, "Video terminado")
+
+def getPid(pname):
+    return int(check_output(["pidof", pname]))
+
+def isProcessAlive(pid):
+    return path.exists("/proc/{}".format(pid))
+
 # Initializing listener
 bot.set_update_listener(listener)
+
+global queue
+queue = []
 
 # Handlers
 
@@ -55,14 +72,14 @@ def exec(m):
     call(command.split(" "))
     bot.send_message(m.chat.id, "*{}* executed".format(m.text.split(" ", 1)[1]), parse_mode="Markdown")
 
-@bot.message_handler(commands=["yt"])
-def youtube(m):
-    reproduceYoutube(m.text.split(" ", 1)[1], m)
-    # call(["pkill", "omxplayer"])
-    # link = m.text.split(" ", 1)[1]
-    # bot.send_message(m.chat.id, "Reproducing video!")
-    # call(["ytcli", link])
-    # bot.reply_to(m, "Video terminado")
+@bot.message_handler(commands=["q", "queue"])
+def enqueue(m):
+    queue.append(m.text.split(" ", 1)[1])
+    bot.reply_to(m, "Video in queue!")
+
+@bot.message_handler(commands=["showq", "showqueue"])
+def showq(m):
+    bot.send_message(m.chat.id, "{} videos in queue".format(len(queue)))
 
 @bot.message_handler(commands=["stop"])
 def stop(m):
@@ -81,6 +98,12 @@ def auto_update(message):
         sys.exit()
     else:
         bot.reply_to(message, "Este comando es solo para admins y debe ser enviado por privado")
+
+@bot.message_handler(lambda m: True)
+def reproduce(m):
+    reproduceYoutube(m.text.split(" ", 1)[1], m)
+    if not queue:
+        reproduceYoutubeInQueue(queue[0], m)
 
 print("Running...")
 bot.polling()
