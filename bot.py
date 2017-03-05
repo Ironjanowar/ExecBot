@@ -14,7 +14,7 @@ if not path.isfile("./data/admins.json"):
 
 with open('./data/admins.json', 'r') as adminData:
     admins = json.load(adminData)
-    
+
 # Ignorar mensajes antiguos
 bot.skip_pending = True
 
@@ -30,6 +30,12 @@ def listener(messages):
             else:
                 print("Group -> " + str(m.chat.title) +
                       " [" + str(m.chat.id) + "]: " + m.text)
+
+def reproduceYoutube(link):
+    call(["pkill", "omxplayer"])
+    bot.send_message(m.chat.id, "Reproducing video!")
+    call(["ytcli", link])
+    bot.reply_to(m, "Video terminado")
 
 # Initializing listener
 bot.set_update_listener(listener)
@@ -51,11 +57,12 @@ def exec(m):
 
 @bot.message_handler(commands=["yt"])
 def youtube(m):
-    call(["pkill", "omxplayer"])
-    link = m.text.split(" ", 1)[1]
-    bot.send_message(m.chat.id, "Reproducing video!")
-    call(["ytcli", link])
-    bot.reply_to(m, "Video terminado")
+    reproduceYoutube(m.text.split(" ", 1)[1])
+    # call(["pkill", "omxplayer"])
+    # link = m.text.split(" ", 1)[1]
+    # bot.send_message(m.chat.id, "Reproducing video!")
+    # call(["ytcli", link])
+    # bot.reply_to(m, "Video terminado")
 
 @bot.message_handler(commands=["stop"])
 def stop(m):
