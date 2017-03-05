@@ -31,7 +31,7 @@ def listener(messages):
                 print("Group -> " + str(m.chat.title) +
                       " [" + str(m.chat.id) + "]: " + m.text)
 
-def reproduceYoutube(link):
+def reproduceYoutube(link, m):
     call(["pkill", "omxplayer"])
     bot.send_message(m.chat.id, "Reproducing video!")
     call(["ytcli", link])
@@ -57,7 +57,7 @@ def exec(m):
 
 @bot.message_handler(commands=["yt"])
 def youtube(m):
-    reproduceYoutube(m.text.split(" ", 1)[1])
+    reproduceYoutube(m.text.split(" ", 1)[1], m)
     # call(["pkill", "omxplayer"])
     # link = m.text.split(" ", 1)[1]
     # bot.send_message(m.chat.id, "Reproducing video!")
@@ -81,6 +81,10 @@ def auto_update(message):
         sys.exit()
     else:
         bot.reply_to(message, "Este comando es solo para admins y debe ser enviado por privado")
+
+@bot.message_handler(lambda m: True)
+def queue(m):
+
 
 print("Running...")
 bot.polling()
