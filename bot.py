@@ -99,7 +99,7 @@ def auto_update(message):
     else:
         bot.reply_to(message, "Este comando es solo para admins y debe ser enviado por privado")
 
-@bot.message_handler(lambda m: m == m)
+@bot.message_handler(True)
 def reproduce(m):
     reproduceYoutube(m.text.split(" ", 1)[1], m)
     if not queue:
