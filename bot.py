@@ -82,9 +82,5 @@ def auto_update(message):
     else:
         bot.reply_to(message, "Este comando es solo para admins y debe ser enviado por privado")
 
-@bot.message_handler(lambda m: True)
-def queue(m):
-
-
 print("Running...")
 bot.polling()
