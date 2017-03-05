@@ -102,6 +102,7 @@ def auto_update(message):
 @bot.message_handler(func=lambda x: x == x)
 def reproduce(m):
     reproduceYoutube(m.text, m)
+    print("Done!")
     if not queue:
         reproduceYoutubeInQueue(queue[0], m)
 
