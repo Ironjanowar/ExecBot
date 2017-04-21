@@ -37,6 +37,8 @@ def reproduceYoutube(link, m):
     bot.send_message(m.chat.id, "Reproducing video!")
     print("Reproducing -> {}".format(link))
     download_video(link, m.chat.id)
+    print("CHECK VIDEO!")
+    call(["ls"])
     call(["omxplayer", "-o", "hdmi", "{}.mkv".format(m.chat.id)])
     bot.reply_to(m, "Video terminado")
 
