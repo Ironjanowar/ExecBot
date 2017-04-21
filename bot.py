@@ -34,12 +34,11 @@ def listener(messages):
 
 def reproduceYoutube(link, m):
     call(["pkill", "omxplayer"])
-    bot.send_message(m.chat.id, "Reproducing video!")
+    bot.send_message(m.chat.id, "Downloading video!")
     download_video(link, m.chat.id)
-    print("CHECK VIDEO!")
-    call(["ls"])
+    bot.send_message(m.chat.id, "Reproducing video!")
     print("Reproducing -> {}".format(link))
-    call(["omxplayer", "-o", "hdmi", "{}.mkv".format(m.chat.id)])
+    call(["omxplayer", "-o", "hdmi", str(m.chat.id)])
     bot.reply_to(m, "Video terminado")
 
 def download_video(link, name):
