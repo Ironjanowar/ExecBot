@@ -36,15 +36,12 @@ def reproduceYoutube(link, m):
     call(["pkill", "omxplayer"])
     bot.send_message(m.chat.id, "Reproducing video!")
     print("Reproducing -> {}".format(link))
-    call(["ytcli", link])
+    download_video(link, m.chat.id)
+    call(["omxplayer", "-o", "hdmi", "{}.mkv".format(m.chat.id)])
     bot.reply_to(m, "Video terminado")
 
-def reproduceYoutubeInQueue(m):
-    call(["pkill", "omxplayer"])
-    bot.send_message(m.chat.id, "Reproducing video!")
-    call(["ytcli", queue[0]])
-    queue.pop(0)
-    bot.reply_to(m.chat.id, "Video terminado")
+def download_video(link, name):
+    call(["youtube-dl", "-o", name, link])
 
 def getPid(pname):
     return int(check_output(["pidof", pname]))
