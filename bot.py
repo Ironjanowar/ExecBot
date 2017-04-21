@@ -41,7 +41,7 @@ def reproduceYoutube(link, m):
     bot.reply_to(m, "Video terminado")
 
 def download_video(link, name):
-    call(["youtube-dl", "-o", name, link])
+    call(["youtube-dl", "-o", str(name), link])
 
 def getPid(pname):
     return int(check_output(["pidof", pname]))
